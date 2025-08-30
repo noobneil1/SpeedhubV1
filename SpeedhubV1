@@ -1,2 +1,180 @@
 loadstring(game:HttpGet("https://pastefy.app/yF07NEuh/raw"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+-- Speed X Hub Loading Screen (Exploit Style, Mobile Optimized)
+-- Put this LocalScript inside StarterGui
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- CONFIG
+local LOADING_TIME = 15 -- total time to show loader (seconds)
+local LOGO_ID = "rbxassetid://1234567890" -- replace with your logo
+
+-- Blur background
+local blur = Instance.new("BlurEffect")
+blur.Size = 0
+blur.Parent = Lighting
+TweenService:Create(blur, TweenInfo.new(1), {Size = 14}):Play()
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "SpeedXHubLoader"
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+-- Container
+local container = Instance.new("Frame")
+container.AnchorPoint = Vector2.new(0.5, 0.5)
+container.Position = UDim2.fromScale(0.5, 0.5)
+container.Size = UDim2.fromScale(0.85, 0.75) -- scales for mobile
+container.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+container.BackgroundTransparency = 0.15
+container.Parent = gui
+Instance.new("UICorner", container).CornerRadius = UDim.new(0, 15)
+
+local outline = Instance.new("UIStroke")
+outline.Thickness = 2
+outline.Color = Color3.fromRGB(255, 0, 0)
+outline.Transparency = 0.25
+outline.Parent = container
+
+-- Logo
+local logo = Instance.new("ImageLabel")
+logo.Image = LOGO_ID
+logo.BackgroundTransparency = 1
+logo.AnchorPoint = Vector2.new(0.5, 0.5)
+logo.Position = UDim2.fromScale(0.5, 0.25)
+logo.Size = UDim2.fromScale(0.35, 0.35)
+logo.ImageTransparency = 1
+logo.Parent = container
+
+-- Title
+local title = Instance.new("TextLabel")
+title.AnchorPoint = Vector2.new(0.5, 0.5)
+title.Position = UDim2.fromScale(0.5, 0.5)
+title.Size = UDim2.fromScale(0.9, 0.1)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.Code
+title.Text = "Speed X Hub"
+title.TextSize = 32
+title.TextColor3 = Color3.fromRGB(255, 0, 0)
+title.TextTransparency = 1
+title.Parent = container
+
+local titleGlow = Instance.new("UIStroke")
+titleGlow.Thickness = 2
+titleGlow.Color = Color3.fromRGB(255, 0, 0)
+titleGlow.Transparency = 0.25
+titleGlow.Parent = title
+
+-- Progress Bar
+local barBG = Instance.new("Frame")
+barBG.AnchorPoint = Vector2.new(0.5, 0.5)
+barBG.Position = UDim2.fromScale(0.5, 0.7)
+barBG.Size = UDim2.fromScale(0.75, 0.07)
+barBG.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+barBG.Parent = container
+Instance.new("UICorner", barBG).CornerRadius = UDim.new(0, 8)
+
+local barFill = Instance.new("Frame")
+barFill.Size = UDim2.fromScale(0, 1)
+barFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+barFill.Parent = barBG
+Instance.new("UICorner", barFill).CornerRadius = UDim.new(0, 8)
+
+-- Percentage
+local percentLabel = Instance.new("TextLabel")
+percentLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+percentLabel.Position = UDim2.fromScale(0.5, 0.8)
+percentLabel.Size = UDim2.fromScale(0.8, 0.08)
+percentLabel.BackgroundTransparency = 1
+percentLabel.Font = Enum.Font.Code
+percentLabel.TextSize = 18
+percentLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+percentLabel.TextTransparency = 1
+percentLabel.Text = "Loading 0%"
+percentLabel.Parent = container
+
+-- Console logs
+local console = Instance.new("TextLabel")
+console.AnchorPoint = Vector2.new(0.5, 0.5)
+console.Position = UDim2.fromScale(0.5, 0.93)
+console.Size = UDim2.fromScale(0.9, 0.25)
+console.BackgroundTransparency = 1
+console.Font = Enum.Font.Code
+console.TextSize = 14
+console.TextColor3 = Color3.fromRGB(0, 255, 0)
+console.Text = ""
+console.TextXAlignment = Enum.TextXAlignment.Left
+console.TextYAlignment = Enum.TextYAlignment.Top
+console.TextWrapped = true
+console.TextTransparency = 0
+console.Parent = container
+
+-- Fade in
+TweenService:Create(logo, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+TweenService:Create(title, TweenInfo.new(1), {TextTransparency = 0}):Play()
+TweenService:Create(percentLabel, TweenInfo.new(1), {TextTransparency = 0}):Play()
+
+-- Logs
+local logs = {
+	"[OK] Initializing Exploit...",
+	"[OK] Injecting Speed X Hub...",
+	"[OK] Bypassing Anti-Cheat...",
+	"[OK] Hooking Metatable...",
+	"[OK] Loading UI Components...",
+	"[OK] Injection Complete!"
+}
+
+-- Typing effect
+local function typeText(target, text, speed)
+	for i = 1, #text do
+		target.Text = target.Text .. text:sub(i, i)
+		task.wait(speed)
+	end
+	target.Text = target.Text .. "\n"
+end
+
+-- Animations
+task.spawn(function()
+	while gui.Parent do
+		local alpha = (math.sin(tick() * 3) + 1) / 2
+		title.TextColor3 = Color3.fromRGB(180 + alpha*75, 0, 0)
+		titleGlow.Color = title.TextColor3
+		task.wait(0.05)
+	end
+end)
+
+-- Progress simulation + typing logs
+local start = tick()
+local logIndex = 1
+while tick() - start < LOADING_TIME do
+	local alpha = (tick() - start) / LOADING_TIME
+	barFill.Size = UDim2.fromScale(alpha, 1)
+	percentLabel.Text = ("Loading %d%%"):format(math.floor(alpha * 100))
+
+	-- log typing trigger
+	if math.floor(alpha * #logs) >= logIndex and logIndex <= #logs then
+		typeText(console, logs[logIndex], 0.02) -- typing speed
+		logIndex += 1
+	end
+
+	task.wait(0.1)
+end
+
+-- Done
+percentLabel.Text = "Injected!"
+TweenService:Create(blur, TweenInfo.new(1), {Size = 0}):Play()
+TweenService:Create(container, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(logo, TweenInfo.new(1), {ImageTransparency = 1}):Play()
+TweenService:Create(title, TweenInfo.new(1), {TextTransparency = 1}):Play()
+TweenService:Create(barBG, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(percentLabel, TweenInfo.new(1), {TextTransparency = 1}):Play()
+TweenService:Create(console, TweenInfo.new(1), {TextTransparency = 1}):Play()
+
+task.wait(1.5)
+gui:Destroy()
+blur:Destroy()
